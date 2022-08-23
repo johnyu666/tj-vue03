@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/redux@4.2.0/dist/redux.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <ul></ul>
+    </div>
+    <script>
+        let users=[{id:1,name:'john'},{id:2,name:'tom'}]
+        function reducer(state=[],action){
+            switch(action.type){
+                case 'findAll':
+                    state.push(...users)
+                    return state;
+                case 'add':
+                    state.push(action.payload)
+                    return state;
+                default:
+                    return state;
+            }
+        }
+        const store=Redux.createStore(reducer)
+        function observer(){
+            let ul=document.querySelector("#app>ul")
+            ul.innerHTML=""
+            let us=store.getState()
+            for(let i=0;i<us.length;i++){
+                let li=document.createElement("li")
+                li.innerHTML=us[i].name
+                ul.appendChild(li)
+            }
+        }
+        store.subscribe(observer)
+        store.dispatch({type:'findAll'})
+        // store.dispatch({type:'add',payload:{id:3,name:'alice'}})
+    </script>
+</body>
+</html>
